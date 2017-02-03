@@ -10,6 +10,7 @@ import elec332.core.util.MinecraftList;
 import elec332.core.world.IElecWorldEventListener;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -195,7 +196,7 @@ public final class MCAbstractionHandler implements IAbstractionLayer, IWorldAbst
 
     @Override
     @Nonnull
-    public AbstractCreativeTab create(int index, String label, Supplier<ItemStack> icon) {
+    public CreativeTabs createTab(int index, String label, Supplier<ItemStack> icon) {
         return new MCAbstractedCreativeTab(index, label, icon);
     }
 
