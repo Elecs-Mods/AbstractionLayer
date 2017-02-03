@@ -1,0 +1,21 @@
+package elec332.abstraction.impl;
+
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraftforge.common.ForgeHooks;
+
+import javax.annotation.Nonnull;
+
+/**
+ * Created by Elec332 on 29-1-2017.
+ */
+public interface IMCAbstractedRecipe extends IRecipe {
+
+    @Override
+    @Nonnull
+    default public ItemStack[] getRemainingItems(@Nonnull InventoryCrafting inv){
+        return ForgeHooks.defaultRecipeGetRemainingItems(inv);
+    }
+
+}
