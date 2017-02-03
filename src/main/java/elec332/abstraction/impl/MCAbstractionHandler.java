@@ -50,6 +50,14 @@ public final class MCAbstractionHandler implements IAbstractionLayer, IWorldAbst
 
     static final Set<IElecWorldEventListener> listeners = Sets.newHashSet();
 
+    public static void unRegisterWorldEventListener_(IElecWorldEventListener listener) {
+        listeners.add(listener);
+    }
+
+    public static void registerWorldEventListener_(IElecWorldEventListener listener) {
+        listeners.add(listener);
+    }
+
     @Nonnull
     @Override
     public IAbstractedClassProvider getClassProvider() {
@@ -82,12 +90,12 @@ public final class MCAbstractionHandler implements IAbstractionLayer, IWorldAbst
 
     @Override
     public void unRegisterWorldEventListener(IElecWorldEventListener listener) {
-        listeners.add(listener);
+        unRegisterWorldEventListener_(listener);
     }
 
     @Override
     public void registerWorldEventListener(IElecWorldEventListener listener) {
-        listeners.add(listener);
+        registerWorldEventListener_(listener);
     }
 
     @Override
