@@ -1,7 +1,6 @@
 package elec332.abstraction.impl;
 
 import elec332.abstraction.object.IAbstractedBlock;
-import elec332.abstraction.object.IAbstractedItem;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -13,10 +12,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -25,6 +27,7 @@ import java.util.List;
 /**
  * Created by Elec332 on 29-1-2017.
  */
+@SuppressWarnings("deprecation")
 public class MCAbstractedBlock extends Block implements IAbstractedBlock {
 
     public MCAbstractedBlock(Material blockMaterialIn, MapColor blockMapColorIn) {
@@ -36,29 +39,63 @@ public class MCAbstractedBlock extends Block implements IAbstractedBlock {
     }
 
     @Override
+    public final boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        return onBlockActivatedC(world, pos, player, hand, state, facing, hitX, hitY, hitZ);
+    }
+
+    @Override
     public boolean onBlockActivatedC(World world, BlockPos pos, EntityPlayer player, EnumHand hand, IBlockState state, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        return false;
+        return super.onBlockActivated(world, pos, state, player, hand, facing, hitX, hitY, hitZ);
     }
 
     @Override
-    public void neighborChangedC(World world, BlockPos pos, IBlockState state, Block neighbor, @Nullable BlockPos fromPos) {
+    @SuppressWarnings("deprecation")
+    public final void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos p_189540_5_) {
+        neighborChangedC(worldIn, pos, state, blockIn, p_189540_5_);
     }
 
+    @SuppressWarnings("deprecation")
+    public void neighborChangedC(World world, BlockPos pos, IBlockState state, Block neighbor, BlockPos p_189540_5_) {
+        super.neighborChanged(state, world, pos, neighbor, p_189540_5_);
+    }
+
+    @Override
+    public final IBlockState getStateForPlacement(@Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull EnumFacing facing, float hitX, float hitY, float hitZ, int meta, @Nonnull EntityLivingBase placer, EnumHand hand) {
+        return this.getBlockStateForPlacementC(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer, hand);
+    }
+
+    @Override
+    public final IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+        return this.getBlockStateForPlacementC(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer, null);
+    }
+
+    @Override
     @Nonnull
-    @Override
-    @SuppressWarnings("all")
     public IBlockState getBlockStateForPlacementC(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, @Nullable EnumHand hand) {
-        return null;
+        return super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer);
+    }
+
+    @Nullable
+    @Override
+    public final AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos) {
+        return getCollisionBoundingBoxC(worldIn, pos, blockState);
     }
 
     @Nullable
     @Override
     public AxisAlignedBB getCollisionBoundingBoxC(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, IBlockState state) {
-        return null;
+        return super.getCollisionBoundingBox(state, world, pos);
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
+    public final void getSubBlocks(@Nonnull Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list) {
+        getSubBlocksC(itemIn, list, tab);
+    }
+
+    @SideOnly(Side.CLIENT)
     public void getSubBlocksC(@Nonnull Item item, List<ItemStack> subBlocks, CreativeTabs creativeTab) {
+        super.getSubBlocks(item, creativeTab, (NonNullList<ItemStack>) subBlocks);
     }
 
 }
