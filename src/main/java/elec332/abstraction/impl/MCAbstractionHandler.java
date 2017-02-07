@@ -4,17 +4,13 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import elec332.abstraction.handlers.IAbstractionLayer;
 import elec332.abstraction.handlers.*;
-import elec332.core.util.AbstractCreativeTab;
-import elec332.core.util.IElecTradeList;
 import elec332.core.util.MinecraftList;
 import elec332.core.world.IElecWorldEventListener;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
@@ -43,7 +39,7 @@ import static elec332.core.util.ItemStackHelper.NULL_STACK;
 /**
  * Created by Elec332 on 28-1-2017.
  */
-public final class MCAbstractionHandler implements IAbstractionLayer, IWorldAbstraction, IInventoryAbstraction, IEntityAbstraction, IGeneralAbstraction, IAbstractedClassProvider {
+public final class MCAbstractionHandler implements IAbstractionLayer, IWorldAbstraction, IInventoryAbstraction, IGeneralAbstraction, IAbstractedClassProvider {
 
     public MCAbstractionHandler(){
         MinecraftForge.EVENT_BUS.register(this);
@@ -80,7 +76,7 @@ public final class MCAbstractionHandler implements IAbstractionLayer, IWorldAbst
     @Nonnull
     @Override
     public Class<? extends IEntityAbstraction> getEntityAbstraction() {
-        return this.getClass();
+        return EntityAbstraction.class;
     }
 
     @Nonnull
@@ -185,19 +181,9 @@ public final class MCAbstractionHandler implements IAbstractionLayer, IWorldAbst
     }
 
     @Override
-    public Entity createEntity(ResourceLocation name, World world) {
-        return EntityList.createEntityByIDFromName(name.getResourcePath(), world);
-    }
-
-    @Override
-    public EntityVillager.ITradeList wrap(IElecTradeList tradeList) {
-        return new MCAbstractedTrade(tradeList);
-    }
-
-    @Override
     @Nonnull
     public CreativeTabs createTab(int index, String label, Supplier<ItemStack> icon) {
-        return new MCAbstractedCreativeTab(index, label, icon);
+        return MCAbstractionInst.createTab_(index, label, icon);
     }
 
     @Override
