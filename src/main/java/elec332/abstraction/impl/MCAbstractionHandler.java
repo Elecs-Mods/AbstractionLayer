@@ -4,18 +4,18 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import elec332.abstraction.handlers.IAbstractionLayer;
 import elec332.abstraction.handlers.*;
+import elec332.core.inventory.widget.slot.WidgetSlot;
 import elec332.core.util.MinecraftList;
 import elec332.core.world.IElecWorldEventListener;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IContainerListener;
-import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.*;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -26,6 +26,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.InvWrapper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -200,6 +201,145 @@ public final class MCAbstractionHandler implements IAbstractionLayer, IWorldAbst
             world.removeEventListener(WorldEventListener.INSTANCE);
             world.addEventListener(WorldEventListener.INSTANCE);
         }
+    }
+
+    @Override
+    public WidgetSlot wrapSlot(final Slot slot) {
+        return new WidgetSlot(null, slot.getSlotIndex(), slot.xPos, slot.yPos){
+
+            @Override
+            public void onSlotChange(ItemStack newStack, ItemStack oldStack) {
+                slot.onSlotChange(newStack, oldStack);
+            }
+
+            @Override
+            public void onCrafting(ItemStack stack, int amount) {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
+            public void onCrafting(ItemStack stack) {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
+            public void onSwapCraft(int slot) {
+                throw new UnsupportedOperationException();
+            }
+
+            @Nonnull
+            @Override
+            public ItemStack onTake(EntityPlayer player, @Nonnull ItemStack stack) {
+                slot.onPickupFromSlot(player, stack);
+                return stack;
+            }
+
+            @Override
+            public boolean isItemValid(ItemStack stack) {
+                return slot.isItemValid(stack);
+            }
+
+            @Override
+            public boolean getHasStack() {
+                return slot.getHasStack();
+            }
+
+            @Override
+            public void putStack(@Nonnull ItemStack stack) {
+                slot.putStack(stack);
+            }
+
+            @Override
+            public void onSlotChanged() {
+                slot.onSlotChanged();
+            }
+
+            @Override
+            public int getSlotStackLimit() {
+                return slot.getSlotStackLimit();
+            }
+
+            @Override
+            public int getItemStackLimit(ItemStack stack) {
+                return slot.getItemStackLimit(stack);
+            }
+
+            @Nullable
+            @Override
+            public String getSlotTexture() {
+                return slot.getSlotTexture();
+            }
+
+            @Nonnull
+            @Override
+            public ItemStack decrStackSize(int amount) {
+                return slot.decrStackSize(amount);
+            }
+
+            @Override
+            public boolean isHere(IInventory inv, int slotIn) {
+                return slot.isHere(inv, slotIn);
+            }
+
+            @Override
+            public boolean canTakeStack(EntityPlayer playerIn) {
+                return slot.canTakeStack(playerIn);
+            }
+
+            @Override
+            public boolean canBeHovered() {
+                return slot.canBeHovered();
+            }
+
+            @Nonnull
+            @Override
+            public ResourceLocation getBackgroundLocation() {
+                return slot.getBackgroundLocation();
+            }
+
+            @Override
+            public void setBackgroundLocation(@Nonnull ResourceLocation texture) {
+                slot.setBackgroundLocation(texture);
+            }
+
+            @Override
+            public void setBackgroundName(@Nonnull String name) {
+                slot.setBackgroundName(name);
+            }
+
+            @Override
+            public TextureAtlasSprite getBackgroundSprite() {
+                return slot.getBackgroundSprite();
+            }
+
+            @Nonnull
+            @Override
+            public TextureMap getBackgroundMap() {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
+            public int getSlotIndex() {
+                return slot.getSlotIndex();
+            }
+
+            @Override
+            public boolean isSameInventory(WidgetSlot other) {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
+            @SuppressWarnings("all")
+            public ItemStack getStack() {
+                return slot.getStack();
+            }
+
+            @Override
+            public IItemHandler getInventory() {
+                return new InvWrapper(slot.inventory);
+            }
+
+        };
     }
     
 }
