@@ -27,6 +27,7 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -201,6 +202,11 @@ public final class MCAbstractionHandler implements IAbstractionLayer, IWorldAbst
             world.removeEventListener(WorldEventListener.INSTANCE);
             world.addEventListener(WorldEventListener.INSTANCE);
         }
+    }
+
+    @Override
+    public List<Object> getRecipeOutput(ShapelessOreRecipe shapelessOreRecipe) {
+        return shapelessOreRecipe.getInput();
     }
 
     @Override
