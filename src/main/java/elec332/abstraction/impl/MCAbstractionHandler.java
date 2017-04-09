@@ -27,6 +27,7 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import javax.annotation.Nonnull;
@@ -180,6 +181,11 @@ public final class MCAbstractionHandler implements IAbstractionLayer, IWorldAbst
     @Override
     public ItemStack copyItemStack(@Nullable ItemStack stack) {
         return stack == null ? NULL_STACK : stack.copy();
+    }
+
+    @Override
+    public List<ItemStack> getOres(String name, boolean alwaysCreateEntry) {
+        return OreDictionary.getOres(name, alwaysCreateEntry);
     }
 
     @Override
