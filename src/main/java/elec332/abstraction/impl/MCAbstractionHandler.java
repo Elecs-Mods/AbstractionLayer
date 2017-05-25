@@ -22,6 +22,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -86,6 +88,11 @@ public final class MCAbstractionHandler implements IAbstractionLayer, IWorldAbst
     @Override
     public Class<? extends IGeneralAbstraction> getGeneralAbstraction() {
         return getClass();
+    }
+
+    @Override
+    public Set<BiomeDictionary.Type> getTypes(Biome biome) {
+        return Sets.newHashSet(BiomeDictionary.getTypesForBiome(biome));
     }
 
     @Override
